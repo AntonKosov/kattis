@@ -2,36 +2,36 @@ package main
 
 import (
 	"bufio"
+	"io"
 	"os"
-	"strconv"
+	"strings"
 )
 
 func main() {
-	read()
+	readInput()
 }
 
-func read() int {
-	reader := bufio.NewReaderSize(os.Stdin, 1_000_000)
-	readInt(reader)
-	readLine(reader)
-	return 0
+func readInput() []string {
+	buffer := make([]byte, 1_000_000)
+	reader := bufio.NewReaderSize(os.Stdin, len(buffer))
+	var sb strings.Builder
+	for {
+		read, err := reader.Read(buffer)
+		sb.Write(buffer[:read])
+		if err != nil {
+			if err == io.EOF {
+				return strings.Split(strings.ReplaceAll(sb.String(), "\r\n", "\n"), "\n")
+			}
+			panic(err)
+		}
+	}
 }
 
-func readInt(reader *bufio.Reader) int {
-	line := readLine(reader)
-	value, err := strconv.Atoi(line)
+/*func strToInt(str string) int {
+	value, err := strconv.Atoi(str)
 	if err != nil {
 		panic(err)
 	}
 
 	return value
-}
-
-func readLine(reader *bufio.Reader) string {
-	line, err := reader.ReadBytes('\n')
-	if err != nil {
-		panic(err)
-	}
-
-	return string(line[:len(line)-1])
-}
+}*/
