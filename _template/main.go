@@ -12,15 +12,16 @@ func main() {
 }
 
 func readInput() []string {
-	buffer := make([]byte, 1_000_000)
+	buffer := make([]byte, 10_000_000)
 	reader := bufio.NewReaderSize(os.Stdin, len(buffer))
 	var sb strings.Builder
+	sb.Grow(len(buffer))
 	for {
 		read, err := reader.Read(buffer)
 		sb.Write(buffer[:read])
 		if err != nil {
 			if err == io.EOF {
-				return strings.Split(strings.ReplaceAll(sb.String(), "\r\n", "\n"), "\n")
+				return strings.Split(sb.String(), "\n")
 			}
 			panic(err)
 		}
